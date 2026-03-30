@@ -453,6 +453,7 @@ const ISO_APP = {
     init() {
         this.isMobile = window.innerWidth <= 768;
         this.initAudioContext();
+        this.initLightbox();
         if (window.mermaid) {
             window.mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
         }
@@ -480,23 +481,102 @@ const ISO_APP = {
     },
 
     initAudioContext() {
-        // 監聽第一次互動以解鎖 AudioContext (行動端策略)
-        const unlock = () => {
+        // 監聽第一次互動以解鎖 AudioContext (行動端與本地桌機策略)
+        const unlock = (e) => {
             if (this.audioUnlocked) return;
+            
             this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            // 播放一段靜音以恢復 context
+            
+            if (this.audioCtx.state === 'suspended') {
+                this.audioCtx.resume();
+            }
+
+            // 徹底解鎖：播放一個極短的靜音 Buffer
             const buffer = this.audioCtx.createBuffer(1, 1, 22050);
             const source = this.audioCtx.createBufferSource();
             source.buffer = buffer;
             source.connect(this.audioCtx.destination);
             source.start(0);
-            
+
             this.audioUnlocked = true;
-            document.removeEventListener('touchstart', unlock);
-            document.removeEventListener('click', unlock);
+            
+            // 點擊導航按鈕時，讓解鎖後的第一次發聲也能成功
+            if (e.target.closest('#nextBtn, #prevBtn, .nav-item')) {
+                const type = e.target.closest('.nav-item') ? 'click' : (e.target.closest('.nav-btn') ? 'click' : '');
+                if (type) this.playSynth(type);
+            }
+
+            document.removeEventListener('touchstart', unlock, true);
+            document.removeEventListener('mousedown', unlock, true);
         };
-        document.addEventListener('touchstart', unlock);
-        document.addEventListener('click', unlock);
+        // 使用 capture 階段確保在按鈕自身的 listener 之前執行
+        document.addEventListener('touchstart', unlock, true);
+        document.addEventListener('mousedown', unlock, true);
+    },
+
+    initLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        const content = document.getElementById('lightbox-content');
+        const caption = document.getElementById('lightbox-caption');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        if (!lightbox) return;
+
+        const closeLightbox = () => {
+            lightbox.style.display = 'none';
+            content.innerHTML = '';
+            caption.innerHTML = '';
+        };
+
+        closeBtn.onclick = closeLightbox;
+        lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); };
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+        // 監聽圖片點擊
+        document.addEventListener('click', (e) => {
+            const img = e.target.closest('.page img');
+            if (img && !img.closest('.lightbox-content')) {
+                lightbox.style.display = 'flex';
+                const clone = img.cloneNode();
+                content.innerHTML = '';
+                content.appendChild(clone);
+                caption.textContent = img.alt || '圖片預覽';
+                this.playSynth('click');
+            }
+
+            // 監聽 Mermaid 圖表點擊
+            const mermaidChart = e.target.closest('.mermaid');
+            if (mermaidChart && !mermaidChart.closest('.lightbox-content')) {
+                lightbox.style.display = 'flex';
+                const svg = mermaidChart.querySelector('svg');
+                if (svg) {
+                    const clone = svg.cloneNode(true);
+                    clone.classList.add('mermaid-clone');
+                    clone.style.maxWidth = '100%';
+                    clone.style.height = 'auto';
+                    content.innerHTML = '';
+                    content.appendChild(clone);
+                    caption.textContent = '圖表放大預覽';
+                    this.playSynth('click');
+                }
+            }
+        });
+
+        // 為所有圖片動態加上放大鏡圖示
+        this.updateZoomIcons();
+    },
+
+    updateZoomIcons() {
+        // 定期檢查並為圖片加上容器與圖示 (針對翻頁後新產生的內容)
+        document.querySelectorAll('.page img:not(.zoomed)').forEach(img => {
+            if (img.closest('.lightbox-content')) return;
+            img.classList.add('zoomed');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'img-container';
+            img.parentNode.insertBefore(wrapper, img);
+            wrapper.appendChild(img);
+            wrapper.insertAdjacentHTML('beforeend', '<div class="zoom-icon"><i class="fas fa-search-plus"></i></div>');
+        });
     },
 
     playSynth(type) {
@@ -608,6 +688,7 @@ const ISO_APP = {
             this.updatePageInfo(e.data);
             navItems.forEach(nav => nav.classList.toggle('active', parseInt(nav.dataset.page) === e.data));
             this.initMermaid();
+            this.updateZoomIcons();
             this.playSynth('flip');
             this.isFlipping = true;
             setTimeout(() => { this.isFlipping = false; }, this.isMobile ? 450 : 850);
