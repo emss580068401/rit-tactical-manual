@@ -26,7 +26,7 @@ const ISO_CONTENT = [
         <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #b91c1c;">【職安科科長的話】</h2>
         <div class="quote-box" style="border: 2px solid var(--primary); background: #fef2f2; padding: 1rem;">
             <p style="font-size: 1.15rem; line-height: 1.6; color: #1e293b; font-weight: 500; margin: 0;">
-                「作為全局首創的職安專責單位，我們的核心目標是建立科學化與高效率的救援體系。RIT 機制不僅是救人，更是建立一道系統性的最後保線。」
+                「作為全局首創的職安專責單位，我們的核心目標是建立科學化與高效率的救援體系。RIT 機制不僅是救人，更是建立一道系統性的最後保險。」
             </p>
             <p style="text-align: right; font-weight: 700; font-size: 1rem; margin-top: 0.5rem;">—— 職安科科長 廖耿輝</p>
         </div>
