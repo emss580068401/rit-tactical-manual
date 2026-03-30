@@ -437,10 +437,7 @@ const ISO_APP = {
     flipBook: null,
     isMobile: false,
     isFlipping: false,
-    sounds: {
-        click: null,
-        flip: null
-    },
+    audioCtx: null,
     audioUnlocked: false,
     selectors: {
         book: '#book',
@@ -455,7 +452,7 @@ const ISO_APP = {
 
     init() {
         this.isMobile = window.innerWidth <= 768;
-        this.initSounds();
+        this.initAudioContext();
         if (window.mermaid) {
             window.mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
         }
@@ -482,22 +479,18 @@ const ISO_APP = {
         ISO_CONTENT.forEach(html => container.insertAdjacentHTML('beforeend', html));
     },
 
-    initSounds() {
-        this.sounds.click = new Audio('https://www.soundjay.com/buttons/sounds/button-16.mp3');
-        this.sounds.flip = new Audio('https://www.soundjay.com/misc/sounds/page-flip-01a.mp3');
-        
-        // 預加載音效
-        Object.values(this.sounds).forEach(s => s.load());
-
-        // 監聽第一次使用者互動以解鎖行動端播放限制
+    initAudioContext() {
+        // 監聽第一次互動以解鎖 AudioContext (行動端策略)
         const unlock = () => {
             if (this.audioUnlocked) return;
-            Object.values(this.sounds).forEach(s => {
-                s.play().then(() => {
-                    s.pause();
-                    s.currentTime = 0;
-                }).catch(() => {});
-            });
+            this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            // 播放一段靜音以恢復 context
+            const buffer = this.audioCtx.createBuffer(1, 1, 22050);
+            const source = this.audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(this.audioCtx.destination);
+            source.start(0);
+            
             this.audioUnlocked = true;
             document.removeEventListener('touchstart', unlock);
             document.removeEventListener('click', unlock);
@@ -506,11 +499,49 @@ const ISO_APP = {
         document.addEventListener('click', unlock);
     },
 
-    playSound(name) {
-        const sound = this.sounds[name];
-        if (sound) {
-            sound.currentTime = 0;
-            sound.play().catch(e => console.log('Audio play blocked:', e));
+    playSynth(type) {
+        if (!this.audioUnlocked || !this.audioCtx) return;
+        
+        if (this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume();
+        }
+
+        const now = this.audioCtx.currentTime;
+
+        if (type === 'click') {
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, now);
+            osc.frequency.exponentialRampToValueAtTime(400, now + 0.1);
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.1);
+        } else if (type === 'flip') {
+            // 模擬紙張翻動的寬頻帶雜音
+            const bufferSize = this.audioCtx.sampleRate * 0.3;
+            const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            const noise = this.audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            const filter = this.audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(3000, now);
+            filter.frequency.exponentialRampToValueAtTime(500, now + 0.3);
+            const gain = this.audioCtx.createGain();
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            noise.start(now);
+            noise.stop(now + 0.3);
         }
     },
 
@@ -577,14 +608,14 @@ const ISO_APP = {
             this.updatePageInfo(e.data);
             navItems.forEach(nav => nav.classList.toggle('active', parseInt(nav.dataset.page) === e.data));
             this.initMermaid();
-            this.playSound('flip');
+            this.playSynth('flip');
             this.isFlipping = true;
             setTimeout(() => { this.isFlipping = false; }, this.isMobile ? 450 : 850);
         });
 
         const safeFlip = (dir) => {
             if (this.isFlipping) return;
-            this.playSound('click');
+            this.playSynth('click');
             
             const currentState = this.flipBook.getState();
             if (currentState === 'flipping' || currentState === 'user_fold') return;
@@ -634,7 +665,7 @@ const ISO_APP = {
             nav.addEventListener('click', (e) => {
                 e.preventDefault();
                 if (this.isFlipping || this.flipBook.getState() === 'flipping') return;
-                this.playSound('click');
+                this.playSynth('click');
 
                 const targetPage = parseInt(nav.dataset.page);
                 if (isNaN(targetPage)) return;
