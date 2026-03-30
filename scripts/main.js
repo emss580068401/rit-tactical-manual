@@ -26,7 +26,7 @@ const ISO_CONTENT = [
         <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #b91c1c;">【職安科科長的話】</h2>
         <div class="quote-box" style="border: 2px solid var(--primary); background: #fef2f2; padding: 1rem;">
             <p style="font-size: 1.15rem; line-height: 1.6; color: #1e293b; font-weight: 500; margin: 0;">
-                「作為全局首創的職安專責單位，我們的核心目標是建立科學化與高效率的救援體系。RIT 機制不僅是救人，更是建立一道系統性的最後保線。」
+                「作為全局首創的職安專責單位，我們的核心目標 establish 了科學化與高效率的救援體系。RIT 機制不僅是救人，更是建立一道系統性的最後保線。」
             </p>
             <p style="text-align: right; font-weight: 700; font-size: 1rem; margin-top: 0.5rem;">—— 職安科科長 廖耿輝</p>
         </div>
@@ -294,7 +294,7 @@ const ISO_CONTENT = [
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">20. 命懸一線：梯上救援與自救滑降</h2>
         <div class="card" style="background: #020617; color: #fff;">
             <h4>高空搬運心法</h4>
-            <p style="font-size: 1rem;">架梯對齊窗底正下方。將患者「面朝梯子」跨疊於接應者肩腿上，夾緊緩慢撤退。</p>
+            <p style="font-size: 1rem;">架梯對齊窗底設計正下方。將患者「面朝梯子」跨疊於接應者肩腿上，夾緊緩慢撤退。</p>
         </div>
         <div class="card" style="border-left: 5px solid #2563eb; margin-top: 1rem;">
             <h4>Window Bailout (緊急滑出)</h4>
@@ -415,7 +415,7 @@ const ISO_CONTENT = [
     `<div class="page centered">
         <h2 style="font-size: 2.2rem; color: #b91c1c;">30. 結語：從技術至生死承諾</h2>
         <p style="font-size: 1.2rem; margin-top: 1.5rem;">
-            RIT 從不是昂貴器材的火力展示。而是保護消防員生存命脈的神聖革命。
+            RIT 從不是昂貴器材的火力展示。而是保護消防員生存命脈的神長型命。
         </p>
         <div class="quote-box" style="background: #020617; color: #fff; width: 100%; padding: 2rem;">
             <p style="font-size: 1.4rem; font-weight: 900; margin: 0;">「我發誓必親手拉住底線，把學長帶回大門。」</p>
@@ -607,9 +607,24 @@ const ISO_APP = {
                 const targetPage = parseInt(nav.dataset.page);
                 if (isNaN(targetPage)) return;
                 
-                // 【核心修復 2】：移除會導致套件當機的 turnToPrevPage 同步迴圈
-                // 直接依賴已修復 showCover:false 狀態下的標準 flip() API
-                this.flipBook.flip(targetPage);
+                const currentPage = this.flipBook.getCurrentPageIndex();
+                
+                if (this.isMobile && targetPage < currentPage) {    
+                    this.isFlipping = true;    
+                    
+                    // 【核心修正】：捨棄 for 迴圈，直接指令套件瞬間跳轉至絕對頁碼
+                    this.flipBook.turnToPage(targetPage);    
+                    
+                    this.updatePageInfo(targetPage);    
+                    navItems.forEach(n => n.classList.toggle('active', parseInt(n.dataset.page) === targetPage));    
+                    this.initMermaid();    
+                    
+                    // turnToPage 沒有動畫，因此鎖定時間可以縮短，讓操作更順暢
+                    setTimeout(() => { this.isFlipping = false; }, 150); 
+                } else {
+                    // 直接依賴已修復 showCover:false 狀態下的標準 flip() API
+                    this.flipBook.flip(targetPage);
+                }
 
                 if (this.isMobile) {
                     setTimeout(() => document.querySelector(this.selectors.appContainer).classList.remove('sidebar-open'), 350);

@@ -308,7 +308,7 @@ th { background: #1e293b; color: #fff; font-weight: 700; }
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 50;
+    z-index: 500;
 }
 
 .nav-btn:hover {
@@ -566,8 +566,16 @@ th { background: #1e293b; color: #fff; font-weight: 700; }
         background: var(--primary);
     }
 
-    #prevBtn { left: 2px; }
-    #nextBtn { right: 2px; }
+    #prevBtn {
+        left: 10px;
+        z-index: 9999 !important;
+        pointer-events: auto;
+    }
+    #nextBtn {
+        right: 10px;
+        z-index: 9999 !important;
+        pointer-events: auto;
+    }
 
     .bottom-bar {
         padding: 0.4rem 1rem;
