@@ -547,21 +547,22 @@ const ISO_APP = {
 
         const safeFlip = (dir) => {
             const currentState = this.flipBook.getState();
-            console.log(`[除錯] 嘗試翻頁 - 方向: ${dir}, isFlipping變數: ${this.isFlipping}, 套件狀態: ${currentState}`);
             
-            if (this.isFlipping) {
-                console.warn('[除錯] 阻擋：自訂的 isFlipping 鎖定中');
-                return;
-            }
-
-            // 【修正 3】：只在動畫真正進行中時才阻擋。避開單頁模式下狀態卡在非 'read' 導致無法翻頁的 Bug
-            if (currentState === 'flipping' || currentState === 'user_fold') {
-                console.warn(`[除錯] 阻擋：套件正在動畫中 (${currentState})`);
-                return;
-            }
+            if (this.isFlipping) return;
+            if (currentState === 'flipping' || currentState === 'user_fold') return;
             
-            console.log(`[除錯] 執行 ${dir === 'next' ? 'flipNext()' : 'flipPrev()'}`);
-            dir === 'next' ? this.flipBook.flipNext() : this.flipBook.flipPrev();
+            const currentIndex = this.flipBook.getCurrentPageIndex();
+            
+            if (this.isMobile) {
+                // 【核心修復 1】：左鍵回翻全面改用「絕對頁碼」跳轉，避開 flipPrev() Bug
+                if (dir === 'next' && currentIndex < TOTAL_PAGES - 1) {
+                    this.flipBook.flip(currentIndex + 1);
+                } else if (dir === 'prev' && currentIndex > 0) {
+                    this.flipBook.flip(currentIndex - 1);
+                }
+            } else {
+                dir === 'next' ? this.flipBook.flipNext() : this.flipBook.flipPrev();
+            }
         };
 
         const prevBtn = document.querySelector(this.selectors.prevBtn);
@@ -601,26 +602,14 @@ const ISO_APP = {
         navItems.forEach(nav => {
             nav.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (this.isFlipping) return;
-                if (this.flipBook.getState() === 'flipping') return;
+                if (this.isFlipping || this.flipBook.getState() === 'flipping') return;
 
                 const targetPage = parseInt(nav.dataset.page);
                 if (isNaN(targetPage)) return;
                 
-                const currentPage = this.flipBook.getCurrentPageIndex();
-                
-                if (this.isMobile && targetPage < currentPage) {
-                    // 修復：移動端往回翻套件 Bug，改用 turnToPrevPage 逐步達成
-                    this.updatePageInfo(targetPage);
-                    navItems.forEach(n => n.classList.toggle('active', parseInt(n.dataset.page) === targetPage));
-                    const steps = currentPage - targetPage;
-                    for (let i = 0; i < steps - 1; i++) {
-                        this.flipBook.turnToPrevPage();
-                    }
-                    this.flipBook.flipPrev();
-                } else {
-                    this.flipBook.flip(targetPage);
-                }
+                // 【核心修復 2】：移除會導致套件當機的 turnToPrevPage 同步迴圈
+                // 直接依賴已修復 showCover:false 狀態下的標準 flip() API
+                this.flipBook.flip(targetPage);
 
                 if (this.isMobile) {
                     setTimeout(() => document.querySelector(this.selectors.appContainer).classList.remove('sidebar-open'), 350);
