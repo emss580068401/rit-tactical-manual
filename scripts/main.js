@@ -181,7 +181,7 @@ const ISO_CONTENT = [
                 B -->|零能見度| C[切換超高感度模式]
                 C --> E[360度立體環繞掃描]
                 E --> F{捕捉到目標?}
-                F -->|是| G[雷射定位目標位址]
+                F -->|是| G[雷激光定位目標位址]
                 G --> I[無線電回報]
                 I --> K[導引救援組進入]
                 classDef danger fill:#f88,stroke:#f00,stroke-width:2px,color:#fff;
@@ -553,9 +553,10 @@ const ISO_APP = {
                 console.warn('[除錯] 阻擋：自訂的 isFlipping 鎖定中');
                 return;
             }
-            if (currentState !== 'read') {
-                console.warn('[除錯] 阻擋：PageFlip 狀態不為 read');
-                // 在某些單頁模式下，狀態可能會卡在 'flipping' 或其他狀態導致 prev 失效
+
+            // 【修正 3】：只在動畫真正進行中時才阻擋。避開單頁模式下狀態卡在非 'read' 導致無法翻頁的 Bug
+            if (currentState === 'flipping' || currentState === 'user_fold') {
+                console.warn(`[除錯] 阻擋：套件正在動畫中 (${currentState})`);
                 return;
             }
             
@@ -600,9 +601,22 @@ const ISO_APP = {
         navItems.forEach(nav => {
             nav.addEventListener('click', (e) => {
                 e.preventDefault();
-                const page = parseInt(nav.dataset.page);
-                if (isNaN(page)) return;
-                this.flipBook.flip(page);
+                const targetPage = parseInt(nav.dataset.page);
+                if (isNaN(targetPage)) return;
+                
+                const currentPage = this.flipBook.getCurrentPageIndex();
+                
+                if (this.isMobile && targetPage < currentPage) {
+                    // 修復：移動端往回翻套件 Bug，改用 turnToPrevPage 逐步達成
+                    const steps = currentPage - targetPage;
+                    for (let i = 0; i < steps - 1; i++) {
+                        this.flipBook.turnToPrevPage();
+                    }
+                    this.flipBook.flipPrev();
+                } else {
+                    this.flipBook.flip(targetPage);
+                }
+
                 if (this.isMobile) {
                     setTimeout(() => document.querySelector(this.selectors.appContainer).classList.remove('sidebar-open'), 350);
                 }
