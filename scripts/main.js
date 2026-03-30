@@ -113,7 +113,7 @@ const ISO_CONTENT = [
         </div>
     </div>`,
     `<div class="page">
-        <h2 style="font-size: 1.6rem; margin-bottom: 1.2rem;">7. 用完不收好，下次死的就是你</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem;">7. 用完不收好，下次死的就是你</h2>
         <div class="card" style="margin-bottom: 1.2rem;">
             <h4>拖拉繩與連結索</h4>
             <ul style="font-size: 1.05rem; line-height: 1.5;">
@@ -133,7 +133,7 @@ const ISO_CONTENT = [
     </div>`,
     `<div class="page">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem;">8. 單兵爆發打包術 (肌肉記憶)</h2>
-        <p style="font-size: 1.1rem;">聽著，濃煙裡你什麼都看不見，更沒時間讓你慢慢僑姿勢。靠你的雙手去「摸」出來。</p>
+        <p style="font-size: 1.1rem;">聽著，濃煙裡你什麼都看不見，更沒時間讓你慢慢喬姿勢。靠你的雙手去「摸」出來。</p>
         <div class="card" style="border-left-color: #2563eb;">
             <h4>單人極速翻捲 (The Sweep)</h4>
             <ol style="font-size: 1.1rem; line-height: 1.6;">
@@ -220,7 +220,7 @@ const ISO_CONTENT = [
         <div class="card" style="background: #020617; color: #fff; padding: 1.2rem;">
             <ul style="line-height: 1.8; font-size: 1.05rem;">
                 <li><strong>領航總機 (Oriented Member)：</strong>你給我死死守在門口或是主搜索繩上！裡面再淒厲都不能離開，你是他們最後的退路標記。</li>
-                <li><strong>盲區搜索手 (Searcher)：</strong>以老大哥為圓心，深入漆黑的房間裡摸搜。摸完一通，順著他的聲音回到這條活路上。</li>
+                <li><strong>盲區搜索手 (Searcher)：</strong>以老大哥為圓心，深入漆黑的房間裡摸索。摸完一通，順著他的聲音回到這條活路上。</li>
                 <li><strong>水帶導航訣竅：</strong>順滑接突起，通向消防車 (Smooth Bump to the Pump)。摸到公母接頭時，順的那邊就是門口。</li>
             </ul>
         </div>
@@ -235,7 +235,7 @@ const ISO_CONTENT = [
                 <li><strong>窗外接應者 (Puller)：</strong>跨坐窗框，抓死他的 SCBA 肩帶，順著Lifter的推力把他硬拖上來。</li>
             </ul>
         </div>
-        <p style="font-size: 1rem; color: #b91c1c; font-weight: bold; margin-top: 1rem;">致命關鍵：一定要把他上半身往前「對摺」(Jackknife)。如果不對折，他的氧氣瓶會卡死在窗台下喙，就算把脊椎扯斷也拉不出來。</p>
+        <p style="font-size: 1rem; color: #b91c1c; font-weight: bold; margin-top: 1rem;">致命關鍵：一定要把他上半身往前「對摺」(Jackknife)。如果不對折，他的氧氣瓶會卡死在窗台下緣，就算把脊椎扯斷也拉不出來。</p>
     </div>`,
     `<div class="page">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">15. 墜落樓板破洞：Nance Drill</h2>
@@ -245,7 +245,7 @@ const ISO_CONTENT = [
             <ul style="font-size: 1.1rem; line-height: 1.6;">
                 <li><strong>死鎖手臂：</strong>用雙套結 (Handcuff Knot) 套進他的雙手臂直到腋下，拉緊。不然拉到一半手骨折人就掉回去了。</li>
                 <li><strong>水帶轉軸：</strong>在水泥破洞邊緣墊上一條充水的硬水帶。把摩擦力降到最低，不然你們三個人在上面也拉不動 100 多公斤的死重。</li>
-                <li><strong>直線平拖：</strong>上面的人退到 3 公尺外安全區，轉身，用腿部力量直線硬掛。</li>
+                <li><strong>直線平拖：</strong>上面的人退到 3 公尺外安全區，轉身，用腿部力量直線硬拉。</li>
             </ul>
         </div>
     </div>`,
@@ -258,7 +258,7 @@ const ISO_CONTENT = [
         </div>
         <div class="card" style="background: #eff6ff; border-left: 5px solid #2563eb;">
             <h4>EBSS (強行插喉管)</h4>
-            <p style="font-size: 1rem;">如果他的面罩或減壓閥已經燒壞漏氣？拔掉他的管子，用我們 RIT Pack 的低壓雙頭管直接桶進他的面罩。等於由我們這邊直接灌氣給他。</p>
+            <p style="font-size: 1rem;">如果他的面罩或減壓閥已經燒壞漏氣？拔掉他的管子，用我們 RIT Pack 的低壓雙頭管直接捅進他的面罩。等於由我們這邊直接灌氣給他。</p>
         </div>
     </div>`,
     `<div class="page">
@@ -311,7 +311,7 @@ const ISO_CONTENT = [
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">21. 最強的盾牌：掩護水線</h2>
         <p style="font-size: 1.1rem; line-height: 1.6;">RIT 進去拉人，後面一定要跟著一條 2.5 吋的重裝水線。</p>
         <div class="card">
-            <h4>水線防禦佈署 (Protective Line)</h4>
+            <h4>水線防禦部署 (Protective Line)</h4>
             <ul style="font-size: 1.1rem; line-height: 1.6;">
                 <li>你的任務是保住 RIT 的退路。</li>
                 <li>這條水線是拿來**打煙跟阻擋火線**的，不是拿來滅火的。</li>
@@ -364,7 +364,7 @@ const ISO_CONTENT = [
                 A[摸到學長了！] --> B(Air: 給他空氣！沒這個一切免談)
                 B --> C(Water: 叫外面的水線打過來掩護)
                 C --> D(A Radio: 幫他把頻道轉到RIT專用台)
-                D --> E(Radio: 對大膽喊我們找到人了)
+                D --> E(Radio: 對大台喊我們找到人了)
                 E --> F(Extrication: 綁緊，硬拖出地獄)
                 style B fill:#fee,stroke:#f44
                 style C fill:#def,stroke:#38f
@@ -412,7 +412,7 @@ const ISO_CONTENT = [
         <div class="card">
             <h4>Blacked-out Mask (全黑蒙眼特訓)</h4>
             <ul style="font-size: 1rem;">
-                <li>**60 秒極限：不管你是要把人翻上 FASTboard，還是接上 UAC，矇住眼睛，60 秒內沒搞定，人就沒了。</li>
+                <li><strong>60 秒極限</strong>：不管你是要把人翻上 FASTboard，還是接上 UAC，矇住眼睛，60 秒內沒搞定，人就沒了。</li>
                 <li>觸覺 3D 建圖：摸他的肩膀、摸管線的走向、摸牆壁的溫度。用手在腦海裡畫出地圖，不是用眼睛。</li>
             </ul>
         </div>
