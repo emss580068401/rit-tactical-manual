@@ -336,7 +336,7 @@ const ISO_CONTENT = [
         <p style="font-size: 1.1rem;">氣體量跌破半數即為紅線。一旦碰觸，不論進度如何，<strong>必須強制撤離</strong>。這是對隊友生命的最底線尊重。</p>
     </div>`,
     `<div class="page">
-        <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">24. 核心搜搜寫縮寫心法</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">24. 核心搜救縮寫心法</h2>
         <div class="card" style="margin-bottom: 1rem; border-left: 6px solid #b91c1c; background: #fff1f2;">
             <strong style="color: #b91c1c;">L.U.N.A.R. 宣告：</strong><br>
             位置/編隊/姓名/殘壓/所需資源。
@@ -601,6 +601,9 @@ const ISO_APP = {
         navItems.forEach(nav => {
             nav.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (this.isFlipping) return;
+                if (this.flipBook.getState() === 'flipping') return;
+
                 const targetPage = parseInt(nav.dataset.page);
                 if (isNaN(targetPage)) return;
                 
@@ -608,6 +611,8 @@ const ISO_APP = {
                 
                 if (this.isMobile && targetPage < currentPage) {
                     // 修復：移動端往回翻套件 Bug，改用 turnToPrevPage 逐步達成
+                    this.updatePageInfo(targetPage);
+                    navItems.forEach(n => n.classList.toggle('active', parseInt(n.dataset.page) === targetPage));
                     const steps = currentPage - targetPage;
                     for (let i = 0; i < steps - 1; i++) {
                         this.flipBook.turnToPrevPage();
