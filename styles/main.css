@@ -490,6 +490,11 @@ th { background: #1e293b; color: #fff; font-weight: 700; }
 
 .page .mermaid {
     cursor: zoom-in;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 1.5rem 0;
 }
 
 /* ============================================

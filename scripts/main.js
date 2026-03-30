@@ -180,7 +180,7 @@ const ISO_CONTENT = [
         <img src="assets/rit_tic_search.png" style="width: 100%; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
     </div>`,
     `<div class="page centered">
-        <h2 style="font-size: 2rem; color: #b91c1c;">11. 盲搜接戰決策卡</h2>
+        <h2 style="font-size: 2rem; color: #b91c1c;">11. TIC空間搜索決策卡</h2>
         <div class="mermaid" id="m1">
             graph TD
                 A[啟動 TIC 空間掃描] --> B{能見度剩多少?}
@@ -195,23 +195,23 @@ const ISO_CONTENT = [
         </div>
     </div>`,
     `<div class="page centered">
-        <h2 style="font-size: 2rem; color: #b91c1c;">12. 打包上板反射決策卡</h2>
+        <h2 style="font-size: 2rem; color: #b91c1c;">12. FASTboard 救援決策卡</h2>
         <div class="mermaid" id="m2">
             graph TD
-                A[接觸到學長了！] --> B{第一眼姿勢?}
-                B -->|趴在地上| C[借力翻面 (The Sweep)]
-                B -->|躺在地上| D[從頭部拿板子套進去]
-                C --> E[把他雙手凹進板子裡]
-                D --> E
-                E --> F[胸前打大叉叉 (Lashing 鎖死)]
-                F --> G{你要從哪裡拉?}
-                G -->|走馬路/樓梯| H[扣中間大三角環]
-                G -->|釣魚/窗口直放| I[主繩先繞把手一圈 (Handle Wrap)]
-                I --> J[扣在藍色大腿索上]
-                H --> K[像拖雪橇一樣拉出去]
-                J --> K
+                A2["接觸到學長了！"] --> B2{"第一眼姿勢?"}
+                B2 -->|"趴在地上"| C2["借力翻面 (The Sweep)"]
+                B2 -->|"躺在地上"| D2["從頭部拿板子套進去"]
+                C2 --> E2["把他雙手凹進板子裡"]
+                D2 --> E2
+                E2 --> F2["胸前打大叉叉 (Lashing 鎖死)"]
+                F2 --> G2{"你要從哪裡拉?"}
+                G2 -->|"走馬路/樓梯"| H2["扣中間大三角環"]
+                G2 -->|"釣魚/窗口直放"| I2["主繩先繞把手一圈 (Handle Wrap)"]
+                I2 --> J2["扣在藍色大腿索上"]
+                H2 --> K2["像拖雪橇一樣拉出去"]
+                J2 --> K2
                 classDef focus fill:#f96,stroke:#f60,stroke-width:2px;
-                class C,E,I focus;
+                class C2,E2,I2 focus;
         </div>
     </div>`,
     `<div class="page">
@@ -412,8 +412,8 @@ const ISO_CONTENT = [
         <div class="card">
             <h4>Blacked-out Mask (全黑蒙眼特訓)</h4>
             <ul style="font-size: 1rem;">
-                <li>**60 秒極限：**不管你是要把人翻上 FASTboard，還是接上 UAC，矇住眼睛，60 秒內沒搞定，人就沒了。</li>
-                <li>**觸覺 3D 建圖：**摸他的肩膀、摸管線的走向、摸牆壁的溫度。用手在腦海裡畫出地圖，不是用眼睛。</li>
+                <li>**60 秒極限：不管你是要把人翻上 FASTboard，還是接上 UAC，矇住眼睛，60 秒內沒搞定，人就沒了。</li>
+                <li>觸覺 3D 建圖：摸他的肩膀、摸管線的走向、摸牆壁的溫度。用手在腦海裡畫出地圖，不是用眼睛。</li>
             </ul>
         </div>
         <p style="font-size: 1.15rem; font-weight: bold; text-align: center; color: #059669; padding: 1rem; border: 2px dashed #059669; margin-top: 1rem;">
@@ -430,7 +430,7 @@ const ISO_CONTENT = [
         <div class="quote-box" style="background: #020617; color: #fff; width: 100%; padding: 2rem;">
             <p style="font-size: 1.4rem; font-weight: 900; margin: 0;">「我發誓，如果有一天你在裡頭跌倒了，我絕對親手把你拖出大門。」</p>
         </div>
-        <p style="text-align: center; font-weight: 700; margin-top: 2rem;">新竹縣政府消防局 實作技術教官小組 敬製</p>
+        <p style="text-align: center; font-weight: 700; margin-top: 2rem;">新竹縣政府消防局 職安科 敬製</p>
     </div>`,
     `<div class="page cover" style="padding: 0; background: #020617; display: flex; align-items: center; justify-content: center;">
         <div style="text-align: center; color: #fff;">
