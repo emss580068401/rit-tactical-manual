@@ -160,7 +160,7 @@ const ISO_CONTENT = [
     `<div class="page">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem;">10. 科技輔助搜索與撤退確保</h2>
         <h4>Cruant Autoroll V6 Max 搜索繩</h4>
-        <p style="font-size: 1.1rem;">在漫天濃煙中，失去方向定位等於宣判死刑。</p>
+        <p style="font-size: 1.1rem;">在漫天濃煙中，巔峰之位等於宣判死刑。</p>
         <ul style="font-size: 1.1rem; line-height: 1.6;">
             <li><strong>AutoRoll 邏輯：</strong>1.3M 的短距活動鎖定，最長 6M 深入延伸彈性。</li>
             <li><strong>實體絕對連結：</strong>末端使用 D 環死扣於帶隊官身上，杜絕脫隊。</li>
@@ -280,7 +280,7 @@ const ISO_CONTENT = [
     </div>`,
     `<div class="page">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">19. 隱形捕鼠夾：電線纏繞與掙脫</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6;">消防員常被天花板掉落的各種電纜線活活「吊死」在地上。</p>
+        <p style="font-size: 1.1rem; line-height: 1.6;">消防員常被天花板掉落的各種電覽線活活「吊死」在地上。</p>
         <div class="card">
             <h4>自救三步程序</h4>
             <ol style="font-size: 1.1rem; line-height: 1.6;">
@@ -336,7 +336,7 @@ const ISO_CONTENT = [
         <p style="font-size: 1.1rem;">氣體量跌破半數即為紅線。一旦碰觸，不論進度如何，<strong>必須強制撤離</strong>。這是對隊友生命的最底線尊重。</p>
     </div>`,
     `<div class="page">
-        <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">24. 核心搜救縮寫心法</h2>
+        <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">24. 核心搜搜寫縮寫心法</h2>
         <div class="card" style="margin-bottom: 1rem; border-left: 6px solid #b91c1c; background: #fff1f2;">
             <strong style="color: #b91c1c;">L.U.N.A.R. 宣告：</strong><br>
             位置/編隊/姓名/殘壓/所需資源。
@@ -368,7 +368,7 @@ const ISO_CONTENT = [
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">26. 絕境破繭 MAYDAY 自我脫困</h2>
         <div class="card">
             <h4>Swim Through (泳進戰術)</h4>
-            <p style="font-size: 1rem;">雙手如游蛙式，從 SCBA 背架周圍<strong>向後撥開</strong>障礙物，壓低重心伏匐前鑽。</p>
+            <p style="font-size: 1rem;">雙手如游蛙式，從 SCBA 背架周圍實施<strong>向後撥開</strong>障礙物，壓低重心伏匐前鑽。</p>
         </div>
         <div class="card" style="margin-top: 1.5rem; border-left-color: #059669;">
             <h4>SCBA 部分脫卸轉移</h4>
@@ -483,9 +483,10 @@ const ISO_APP = {
         const config = this.isMobile
             ? { 
                 width: vw, height: vh, size: "fixed", minWidth: 1200, showCover: true, 
-                useMouseEvents: false, /* 改為 false：關閉預設滑動，交由下方手勢控制 */
-                disableFlipByClick: true, /* 改為 true：防止點擊螢幕邊緣誤翻 */
-                flippingTime: 400, maxShadowOpacity: 0.15, usePortrait: true, mobileScrollSupport: true 
+                useMouseEvents: false, 
+                disableFlipByClick: true, 
+                flippingTime: 400, maxShadowOpacity: 0.15, usePortrait: true, 
+                mobileScrollSupport: false // 【測試修改點】：暫時關閉此功能以排除滑動偵測衝突
               }
             : { width: 650, height: 950, size: "stretch", showCover: true, useMouseEvents: false, disableFlipByClick: true, flippingTime: 800 };
 
