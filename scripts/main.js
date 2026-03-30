@@ -245,7 +245,7 @@ const ISO_CONTENT = [
     </div>`,
     `<div class="page">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">16. 緊急供氣：UAC 與 EBSS</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6;">RIT 小組必須在零視覺下，20 秒內對接成功。</p>
+        <p style="font-size: 1.1rem; line-height: 1.6;">RIT 小組必須在 zero 視覺下，20 秒內對接成功。</p>
         <div class="card" style="margin-bottom: 1rem;">
             <h4>UAC (高壓等值均壓)</h4>
             <p style="font-size: 1rem;">快速插上氣瓶右下方 UAC 接頭，瞬間完成均分壓力。</p>
@@ -530,8 +530,20 @@ const ISO_APP = {
         });
 
         const safeFlip = (dir) => {
-            if (this.isFlipping) return;
-            if (this.flipBook.getState() !== 'read') return;
+            const currentState = this.flipBook.getState();
+            console.log(`[除錯] 嘗試翻頁 - 方向: ${dir}, isFlipping變數: ${this.isFlipping}, 套件狀態: ${currentState}`);
+            
+            if (this.isFlipping) {
+                console.warn('[除錯] 阻擋：自訂的 isFlipping 鎖定中');
+                return;
+            }
+            if (currentState !== 'read') {
+                console.warn('[除錯] 阻擋：PageFlip 狀態不為 read');
+                // 在某些單頁模式下，狀態可能會卡在 'flipping' 或其他狀態導致 prev 失效
+                return;
+            }
+            
+            console.log(`[除錯] 執行 ${dir === 'next' ? 'flipNext()' : 'flipPrev()'}`);
             dir === 'next' ? this.flipBook.flipNext() : this.flipBook.flipPrev();
         };
 
