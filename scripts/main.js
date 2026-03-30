@@ -104,7 +104,7 @@ const ISO_CONTENT = [
             <tr><td style="padding: 8px; font-weight: bold;">前端幾何</td><td style="padding: 8px;">45度上揚斜角。滑過散落雜物，對抗翻滾。</td></tr>
         </table>
         <div class="quote-box" style="margin-top: 1rem; border-left: 4px solid #2563eb;">
-            <p style="font-size: 0.95rem; margin: 0;"><strong>教官筆記：</strong>板體錐形設計與底部導軌是為了實現「機械利益」最大化。</p>
+            <p style="font-size: 0.95rem; margin: 0;"><strong>教官筆記：</strong>板體錐形設計與底部導軌是為了實現「機械利益」最大化執行。</p>
         </div>
     </div>`,
     `<div class="page">
@@ -248,7 +248,7 @@ const ISO_CONTENT = [
         <p style="font-size: 1.1rem; line-height: 1.6;">RIT 小組必須在 zero 視覺下，20 秒內對接成功。</p>
         <div class="card" style="margin-bottom: 1rem;">
             <h4>UAC (高壓等值均壓)</h4>
-            <p style="font-size: 1rem;">快速插上氣瓶右下方 UAC 接頭，瞬間完成均分壓力。</p>
+            <p style="font-size: 1rem;">快速插上氣瓶氣瓶下方 UAC 接頭，瞬間完成均分壓力。</p>
         </div>
         <div class="card" style="background: #eff6ff; border-left: 5px solid #2563eb;">
             <h4>EBSS (低壓雙頭管串接)</h4>
@@ -354,7 +354,7 @@ const ISO_CONTENT = [
         <h2 style="font-size: 2rem; color: #b91c1c;">25. A.W.A.R.E. 作業優先序</h2>
         <div class="mermaid" id="m3">
             graph TD
-                A[接觸受困者] --> B(Air: 建立供氣)
+                A[接觸受受員] --> B(Air: 建立供氣)
                 B --> C(Water: 建立防禦水線)
                 C --> D(A Radio: 更換特勤頻道)
                 D --> E(Radio: 回報IC情況)
@@ -368,7 +368,7 @@ const ISO_CONTENT = [
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">26. 絕境破繭 MAYDAY 自我脫困</h2>
         <div class="card">
             <h4>Swim Through (泳進戰術)</h4>
-            <p style="font-size: 1rem;">雙手如游蛙式，從 SCBA 背架周圍實施<strong>向後撥開</strong>障礙物，壓低重心伏匐前鑽。</p>
+            <p style="font-size: 1rem;">雙手如游蛙式，從 SCBA 背背周圍實施<strong>向後撥開</strong>障礙物，壓低重心伏匐前鑽。</p>
         </div>
         <div class="card" style="margin-top: 1.5rem; border-left-color: #059669;">
             <h4>SCBA 部分脫卸轉移</h4>
@@ -392,7 +392,7 @@ const ISO_CONTENT = [
         <p style="font-size: 1.1rem;">恐慌是火場裡濃度最致命且無法防護的毒氣。</p>
         <div class="card" style="border-left: 5px solid #8b5cf6;">
             <h4>Box Breathing (方塊呼吸法)</h4>
-            <p style="font-size: 1rem;">吸氣4秒、憋氣4秒、吐氣4秒、憋氣4秒。強迫大腦退出「棄甲逃跑模式」，平穩心跳，省下珍貴氧氣。</p>
+            <p style="font-size: 1rem;">吸氣4秒、憋氣4秒、吐氣4秒、憋氣4秒。強迫大腦退出「棄甲逃逃模式」，平穩心跳，省下珍貴氧氣。</p>
         </div>
         <div class="quote-box" style="background: #020617; color: #fff;">
             <p style="font-size: 1rem;"><strong>「先掌控住你的恐懼心智，才能掌控好保命工具。」</strong></p>
@@ -486,8 +486,6 @@ const ISO_APP = {
                 width: vw, 
                 height: vh, 
                 size: "fixed", 
-                // 【修正 1】：移除 minWidth: 1200，避免與手機實際寬度產生計算衝突
-                // 【修正 2】：將 showCover 設為 false。在單頁模式(usePortrait)下，首頁本來就會單獨全螢幕顯示，關閉此項可避開套件回翻失效的 Bug
                 showCover: false, 
                 useMouseEvents: false, 
                 disableFlipByClick: true, 
@@ -549,28 +547,25 @@ const ISO_APP = {
             if (this.isFlipping) return;
             
             const currentState = this.flipBook.getState();
-            // 阻擋非待命狀態，確保指令不衝突
             if (currentState === 'flipping' || currentState === 'user_fold') return;
 
             const currentPage = this.flipBook.getCurrentPageIndex();
 
             if (this.isMobile) {
-                // 【手機單頁模式】：捨棄所有 flip 動畫 API，統一改用純跳頁與手動 UI 更新
                 if (dir === 'prev' && currentPage > 0) {
                     this.isFlipping = true;
-                    this.flipBook.turnToPrevPage(); // 無動畫往回跳
+                    this.flipBook.turnToPrevPage(); 
                     this.updatePageInfo(currentPage - 1);
                     this.initMermaid();
                     setTimeout(() => { this.isFlipping = false; }, 150);
                 } else if (dir === 'next' && currentPage < TOTAL_PAGES - 1) {
                     this.isFlipping = true;
-                    this.flipBook.turnToNextPage(); // 無動畫往下跳
+                    this.flipBook.turnToNextPage(); 
                     this.updatePageInfo(currentPage + 1);
                     this.initMermaid();
                     setTimeout(() => { this.isFlipping = false; }, 150);
                 }
             } else {
-                // 【電腦雙頁模式】：維持原有的套件動畫邏輯
                 dir === 'next' ? this.flipBook.flipNext() : this.flipBook.flipPrev();
             }
         };
@@ -595,20 +590,6 @@ const ISO_APP = {
         addBtnEvents(prevBtn, 'prev');
         addBtnEvents(nextBtn, 'next');
 
-        const blockMiddleDrag = (e) => {
-            if (!this.isMobile) return;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const vw = window.innerWidth;
-            if (clientX > vw * 0.2 && clientX < vw * 0.8) {
-                e.stopPropagation();
-            }
-        };
-        document.querySelectorAll('.page').forEach(page => {
-            page.addEventListener('touchstart', blockMiddleDrag, { passive: true });
-            page.addEventListener('pointerdown', blockMiddleDrag, { passive: true });
-            page.addEventListener('mousedown', blockMiddleDrag, { passive: true });
-        });
-
         navItems.forEach(nav => {
             nav.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -621,18 +602,12 @@ const ISO_APP = {
                 
                 if (this.isMobile && targetPage < currentPage) {    
                     this.isFlipping = true;    
-                    
-                    // 【核心修正】：捨棄 for 迴圈，直接指令套件瞬間跳轉至絕對頁碼
                     this.flipBook.turnToPage(targetPage);    
-                    
                     this.updatePageInfo(targetPage);    
                     navItems.forEach(n => n.classList.toggle('active', parseInt(n.dataset.page) === targetPage));    
                     this.initMermaid();    
-                    
-                    // turnToPage 沒有動畫，因此鎖定時間可以縮短，讓操作更順暢
                     setTimeout(() => { this.isFlipping = false; }, 150); 
                 } else {
-                    // 直接依賴已修復 showCover:false 狀態下的標準 flip() API
                     this.flipBook.flip(targetPage);
                 }
 
@@ -666,54 +641,45 @@ const ISO_APP = {
         target.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
-            startTime = Date.now(); // 紀錄觸控開始時間
+            startTime = Date.now(); 
             isSwiping = false;
         }, { passive: true });
 
         target.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 1) return; // 允許雙指縮放
-            const vw = window.innerWidth;
-            if (startX > vw * 0.2 && startX < vw * 0.8) return;
+            if (e.touches.length > 1) return; 
 
             const dx = Math.abs(e.touches[0].clientX - startX);
             const dy = Math.abs(e.touches[0].clientY - startY);
 
-            // X 軸移動量大於 Y 軸 1.5 倍，且 > 15px 視為水平翻頁
-            if (dx > dy * 1.5 && dx > 15) {
+            // 只要水平滑動大於垂直，且超過 15px，就接管為翻頁手勢 (無位置限制)
+            if (dx > dy * 1.2 && dx > 15) {
                 isSwiping = true;
                 if (e.cancelable) e.preventDefault();
             } else if (dy > dx) {
-                isSwiping = false; // 判定為上下滑動
+                isSwiping = false; 
             }
         }, { passive: false });
 
         target.addEventListener('touchend', (e) => {
+            // 避開按鈕與選單區塊
             if (document.elementFromPoint(startX, startY)?.closest('.nav-btn, .sidebar, .menu-toggle, .sidebar-overlay')) return;
             
-            // 觸控時間超過 400 毫秒視為長按，取消翻頁
-            const touchDuration = Date.now() - startTime;
-            if (touchDuration > 400) {
-                isSwiping = false;
-                return;
-            }
-
+            if (Date.now() - startTime > 600) return; // 觸控超過 600ms 視為長按閱讀
             if (!isSwiping) return;
 
-            const vw = window.innerWidth;
-            if (startX > vw * 0.2 && startX < vw * 0.8) return; 
-
             const dx = e.changedTouches[0].clientX - startX;
-            if (Math.abs(dx) > 50) {
+            
+            if (Math.abs(dx) > 40) { // 滑動距離超過 40px 即觸發
                 if (this.isFlipping) return;
                 
-                // 【核心修正】：將滑動手勢也全面納入 turnTo 終極防護
                 if (this.isMobile) {
                     const currentPage = this.flipBook.getCurrentPageIndex();
                     if (dx > 0 && currentPage > 0) {
-                        // 往右滑，回上一頁
+                        // 往右滑，回上一頁 (採用與導航列相同的絕對頁碼防護)
                         this.isFlipping = true;
                         this.flipBook.turnToPrevPage();
                         this.updatePageInfo(currentPage - 1);
+                        document.querySelectorAll(this.selectors.navItems).forEach(n => n.classList.toggle('active', parseInt(n.dataset.page) === currentPage - 1));
                         this.initMermaid();
                         setTimeout(() => { this.isFlipping = false; }, 150);
                     } else if (dx < 0 && currentPage < TOTAL_PAGES - 1) {
@@ -721,6 +687,7 @@ const ISO_APP = {
                         this.isFlipping = true;
                         this.flipBook.turnToNextPage();
                         this.updatePageInfo(currentPage + 1);
+                        document.querySelectorAll(this.selectors.navItems).forEach(n => n.classList.toggle('active', parseInt(n.dataset.page) === currentPage + 1));
                         this.initMermaid();
                         setTimeout(() => { this.isFlipping = false; }, 150);
                     }
