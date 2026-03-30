@@ -221,7 +221,7 @@ const ISO_CONTENT = [
     </div>`,
     `<div class="page">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">14. 侷限空間：Denver Drill 極限突破</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6;">針對全副裝備卡死在狹小走廊盡頭，需依靠高窗強拉出的技術。</p>
+        <p style="font-size: 1.1rem; line-height: 1.6;">針對全副裝備開卡死在狹小走廊盡頭，需依靠高窗強拉出的技術。</p>
         <div class="card" style="border-left: 5px solid #2563eb;">
             <h4>兩人聯動協作</h4>
             <ul style="font-size: 1.1rem; line-height: 1.6;">
@@ -546,21 +546,31 @@ const ISO_APP = {
         });
 
         const safeFlip = (dir) => {
-            const currentState = this.flipBook.getState();
-            
             if (this.isFlipping) return;
+            
+            const currentState = this.flipBook.getState();
+            // 阻擋非待命狀態，確保指令不衝突
             if (currentState === 'flipping' || currentState === 'user_fold') return;
-            
-            const currentIndex = this.flipBook.getCurrentPageIndex();
-            
+
+            const currentPage = this.flipBook.getCurrentPageIndex();
+
             if (this.isMobile) {
-                // 【核心修復 1】：左鍵回翻全面改用「絕對頁碼」跳轉，避開 flipPrev() Bug
-                if (dir === 'next' && currentIndex < TOTAL_PAGES - 1) {
-                    this.flipBook.flip(currentIndex + 1);
-                } else if (dir === 'prev' && currentIndex > 0) {
-                    this.flipBook.flip(currentIndex - 1);
+                // 【手機單頁模式】：捨棄所有 flip 動畫 API，統一改用純跳頁與手動 UI 更新
+                if (dir === 'prev' && currentPage > 0) {
+                    this.isFlipping = true;
+                    this.flipBook.turnToPrevPage(); // 無動畫往回跳
+                    this.updatePageInfo(currentPage - 1);
+                    this.initMermaid();
+                    setTimeout(() => { this.isFlipping = false; }, 150);
+                } else if (dir === 'next' && currentPage < TOTAL_PAGES - 1) {
+                    this.isFlipping = true;
+                    this.flipBook.turnToNextPage(); // 無動畫往下跳
+                    this.updatePageInfo(currentPage + 1);
+                    this.initMermaid();
+                    setTimeout(() => { this.isFlipping = false; }, 150);
                 }
             } else {
+                // 【電腦雙頁模式】：維持原有的套件動畫邏輯
                 dir === 'next' ? this.flipBook.flipNext() : this.flipBook.flipPrev();
             }
         };
