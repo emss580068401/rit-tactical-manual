@@ -264,7 +264,7 @@ const ISO_CONTENT = [
         </div>
         <div class="card" style="border-left-color: #2563eb;">
             <h4>Shoulder Strap Drag (肩帶改裝)</h4>
-            <p style="font-size: 1rem;">鬆開一側肩帶插扣，拉長後死鎖到對側腰部 D 環，創造一體成型的人肉牽引把手。</p>
+            <p style="font-size: 1rem;">鬆開一側肩帶插扣，拉長後死鎖到對側腰部 D環，創造一體成型的人肉牽引把手。</p>
         </div>
     </div>`,
     `<div class="page">
@@ -280,7 +280,7 @@ const ISO_CONTENT = [
     </div>`,
     `<div class="page">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.2rem; color: #b91c1c;">19. 隱形捕鼠夾：電線纏繞與掙脫</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6;">消防員常被天花板掉落的各種電覽線活活「吊死」在地上。</p>
+        <p style="font-size: 1.1rem; line-height: 1.6;">消防員常被天花板掉落的各種電纜線活活「吊死」在地上。</p>
         <div class="card">
             <h4>自救三步程序</h4>
             <ol style="font-size: 1.1rem; line-height: 1.6;">
@@ -480,15 +480,31 @@ const ISO_APP = {
         const element = document.querySelector(this.selectors.book);
         const vw = document.getElementById('book-container').clientWidth;
         const vh = document.getElementById('book-container').clientHeight;
+        
         const config = this.isMobile
             ? { 
-                width: vw, height: vh, size: "fixed", minWidth: 1200, showCover: true, 
+                width: vw, 
+                height: vh, 
+                size: "fixed", 
+                // 【修正 1】：移除 minWidth: 1200，避免與手機實際寬度產生計算衝突
+                // 【修正 2】：將 showCover 設為 false。在單頁模式(usePortrait)下，首頁本來就會單獨全螢幕顯示，關閉此項可避開套件回翻失效的 Bug
+                showCover: false, 
                 useMouseEvents: false, 
                 disableFlipByClick: true, 
-                flippingTime: 400, maxShadowOpacity: 0.15, usePortrait: true, 
-                mobileScrollSupport: false // 【測試修改點】：暫時關閉此功能以排除滑動偵測衝突
+                flippingTime: 400, 
+                maxShadowOpacity: 0.15, 
+                usePortrait: true, 
+                mobileScrollSupport: false 
               }
-            : { width: 650, height: 950, size: "stretch", showCover: true, useMouseEvents: false, disableFlipByClick: true, flippingTime: 800 };
+            : { 
+                width: 650, 
+                height: 950, 
+                size: "stretch", 
+                showCover: true, 
+                useMouseEvents: false, 
+                disableFlipByClick: true, 
+                flippingTime: 800 
+              };
 
         this.flipBook = new St.PageFlip(element, config);
         this.flipBook.loadFromHTML(document.querySelectorAll('.page'));
