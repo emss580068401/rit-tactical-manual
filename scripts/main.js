@@ -705,7 +705,28 @@ const ISO_APP = {
             const dx = e.changedTouches[0].clientX - startX;
             if (Math.abs(dx) > 50) {
                 if (this.isFlipping) return;
-                dx > 0 ? this.flipBook.flipPrev() : this.flipBook.flipNext();
+                
+                // 【核心修正】：將滑動手勢也全面納入 turnTo 終極防護
+                if (this.isMobile) {
+                    const currentPage = this.flipBook.getCurrentPageIndex();
+                    if (dx > 0 && currentPage > 0) {
+                        // 往右滑，回上一頁
+                        this.isFlipping = true;
+                        this.flipBook.turnToPrevPage();
+                        this.updatePageInfo(currentPage - 1);
+                        this.initMermaid();
+                        setTimeout(() => { this.isFlipping = false; }, 150);
+                    } else if (dx < 0 && currentPage < TOTAL_PAGES - 1) {
+                        // 往左滑，去下一頁
+                        this.isFlipping = true;
+                        this.flipBook.turnToNextPage();
+                        this.updatePageInfo(currentPage + 1);
+                        this.initMermaid();
+                        setTimeout(() => { this.isFlipping = false; }, 150);
+                    }
+                } else {
+                    dx > 0 ? this.flipBook.flipPrev() : this.flipBook.flipNext();
+                }
             }
             isSwiping = false;
         }, { passive: true });
